@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Lab 7 Comments</title>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+$(document).ready(function(){
+    $("#submit").click(function(){
+      var myobj = {Name:$("#Name").val(), Comment:$("#Comment").val()};
+      jobj = JSON.stringify(myobj);
+      $("#json").text(jobj);
+
+      var url = "http://54.174.237.165:6007/comment";
+      $.post(url, jobj, function(data, textStatus) {
+        $("#done").text(textStatus);
+        });
+
+     });
+
+    $("#show").click(function(){    
+      var url = "http://54.174.237.165:6007/comment";
+      $.getJSON(url, function(data) {
+        var everything;
+        everything = "<h2>Current Comments</h2><br>";
+        everything += "<ul>";
+        $.each(data, function(i, item) {
+          everything += "<li> Name: " + data[i].Name + "----->Comment: " + data[i].Comment;
+          });
+        everything += "</ul>";
+        $("#currentComments").html(everything);
+          });
+      });
+     
+    });
+</script>
+</head>
+<body>
+
+<form id="commentForm" action="">
+  Name: <input type="text" id="Name"><br><br>
+  Comment: <input type="text" id="Comment"><br>
+</form>
+<p>
+<button id="submit" type="button" class ="btn btn-primary">Submit Comment</button>
+<button id="show" type="button" class="btn btn-info">Show Comments</button>
+</p>
+
+<div id="json"></div>
+<div id="done"></div>
+<div id="currentComments"></div>
+</body>
+</html>
+
